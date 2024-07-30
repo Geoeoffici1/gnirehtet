@@ -27,10 +27,10 @@ const TAG: &str = "AdbMonitor";
 
 #[inline]
 fn get_adb_path() -> String {
-return std::env::var_os("ADB")
-    .unwrap_or("adb".into())
-    .into_string()
-    .expect("invalid ADB value");
+    return std::env::var_os("ADB")
+        .unwrap_or("adb".into())
+        .into_string()
+        .expect("invalid ADB value");
 }
 
 #[inline]
@@ -50,7 +50,7 @@ impl<F> AdbMonitorCallback for F
 where
     F: Fn(&str),
 {
-    fn on_new_device_connected(&self, serial: &str) {g
+    fn on_new_device_connected(&self, serial: &str) {
         self(serial);
     }
 }
@@ -224,7 +224,7 @@ impl AdbMonitor {
 
     fn start_adb_daemon() -> bool {
         info!(target: TAG, "Restarting adb daemon");
-        
+
         let args: Vec<String> = get_adb_server_command()
             .split_whitespace()
             .map(|s| s.to_string())
@@ -232,10 +232,7 @@ impl AdbMonitor {
 
         debug!(target: TAG, "Adb daemon command: {:?}", args);
 
-        match process::Command::new(get_adb_path())
-            .args(&args)
-            .status()
-        {
+        match process::Command::new(get_adb_path()).args(&args).status() {
             Ok(exit_status) => {
                 if exit_status.success() {
                     true
